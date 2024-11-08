@@ -51,7 +51,7 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
           container,
           document: documentUrl,
           baseUrl: `${window.location.protocol}//${window.location.host}/`,
-          licenseKey: process.env.PSPDFKit_License_Key
+          licenseKey: import.meta.env.VITE_PSPDFKIT_LICENSE_KEY
         });
 
         const text = await extractTextFromPage(instance);
