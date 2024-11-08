@@ -46,7 +46,7 @@ function App() {
     loadCachedPdfs();
   }, []);
 
-  const handleFileUpload = (file) => {
+  const handleFileUpload = async (file) => {
     console.log('File received:', file);
     console.log('File type:', file instanceof File);
     console.log('File properties:', {
@@ -106,7 +106,7 @@ function App() {
         console.error('Failed to generate thumbnail: Max retries reached');
       };
     // Start the thumbnail generation process
-    generateThumbnail(newDoc.id);
+      await generateThumbnail(newDoc.id);
 
     } else {
       console.error('Invalid file object received');
