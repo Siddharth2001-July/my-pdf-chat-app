@@ -2,7 +2,7 @@
 import PdfViewerComponent from "./components/PdfViewerComponent";
 import ChatComponent from "./components/ChatComponent";
 import FileUpload from "./components/FileUpload";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ThemeProvider,
   I18nProvider,
@@ -25,10 +25,26 @@ function App() {
 
   const [documents, setDocuments] = useState([]);
   const [selectedDocumentId, setSelectedDocumentId] = useState(null);
-  const [selectedTab, setSelectedTab] = useState("reports");
+  const [selectedTab, setSelectedTab] = useState("docs");
   const [isUploading, setIsUploading] = useState(false);
 
   const [uploadedFile, setUploadedFile] = useState(null);
+
+  // Load cached PDFs on component mount
+  useEffect(() => {
+    const loadCachedPdfs = async () => {
+      try {
+        const cachedPdfs = await pdfCache.getAllPdfs();
+        if (cachedPdfs.length > 0) {
+          setDocuments(cachedPdfs);
+        }
+      } catch (error) {
+        console.error('Error loading cached PDFs:', error);
+      }
+    };
+
+    loadCachedPdfs();
+  }, []);
 
   const handleFileUpload = (file) => {
     console.log('File received:', file);
@@ -41,15 +57,57 @@ function App() {
     });
 
     if (file instanceof File) {
-      setUploadedFile(file);
       // Create a new document entry
       const newDoc = { 
         id: Date.now(), 
         name: file.name,
-        file: file
+        file: file,
+        thumbnail:""
       };
       setDocuments([...documents, newDoc]);
       setSelectedDocumentId(newDoc.id);
+      setUploadedFile(file);
+
+      // Function to generate thumbnail with retry mechanism
+      const generateThumbnail = async (docId, maxRetries = 20, retryInterval = 500) => {
+        let retries = 0;
+      
+        while (retries < maxRetries) {
+          try {
+            if (!window.instance) {
+              console.log(`Waiting for PDF to load... (Attempt ${retries + 1}/${maxRetries})`);
+              await new Promise((resolve) => setTimeout(resolve, retryInterval));
+              retries++;
+              continue;
+            }
+      
+            const thumbnailUrl = await window.instance.renderPageAsImageURL({ width: 200 }, 0);
+            const updatedDoc = {
+              ...newDoc,
+              thumbnail: thumbnailUrl,
+            };
+      
+            // Update state and cache the PDF with thumbnail
+            setDocuments((prevDocs) =>
+              prevDocs.map((doc) => (doc.id === docId ? updatedDoc : doc))
+            );
+      
+            // Cache the PDF with its thumbnail
+            await pdfCache.storePdf(updatedDoc);
+            console.log('PDF cached successfully');
+            console.log('Thumbnail generated successfully');
+            return;
+          } catch (error) {
+            console.error('Error generating thumbnail:', error);
+            retries++;
+          }
+        }
+      
+        console.error('Failed to generate thumbnail: Max retries reached');
+      };
+    // Start the thumbnail generation process
+    generateThumbnail(newDoc.id);
+
     } else {
       console.error('Invalid file object received');
     }
@@ -117,13 +175,24 @@ function App() {
 
   const handleSelectDocument = (id) => {
     setSelectedDocumentId(id);
+    // Get the selected document
+    const selectedDoc = documents.find(doc => doc.id === id);
+    if (selectedDoc) {
+      setUploadedFile(selectedDoc.file);
+    }
   };
 
-  const handleDeleteDocument = () => {
-    setDocuments((prevDocs) =>
-      prevDocs.filter((doc) => doc.id !== selectedDocumentId)
-    );
-    setSelectedDocumentId(null);
+  const handleDeleteDocument = async (id) => {
+    try {
+      await pdfCache.deletePdf(id);
+      setDocuments(prevDocs => prevDocs.filter(doc => doc.id !== id));
+      if (selectedDocumentId === id) {
+        setSelectedDocumentId(null);
+        setUploadedFile(null);
+      }
+    } catch (error) {
+      console.error('Error deleting PDF:', error);
+    }
   };
 
   return (

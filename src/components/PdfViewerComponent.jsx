@@ -1,5 +1,5 @@
 // src/components/PdfViewerComponent.jsx
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 
 export default function PdfViewerComponent({ document, onTextExtracted }) {
   const containerRef = useRef(null);
@@ -19,6 +19,16 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
       return '';
     }
   };
+
+  // Memoize the document URL to prevent unnecessary re-renders
+  const documentUrl = useMemo(() => {
+    if (document instanceof File) {
+      return URL.createObjectURL(document);
+    } else if (typeof document === 'string') {
+      return document;
+    }
+    return null;
+  }, [document]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -53,7 +63,7 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
           baseUrl: `${window.location.protocol}//${window.location.host}/`,
           licenseKey: import.meta.env.VITE_PSPDFKIT_LICENSE_KEY
         });
-
+        window.instance = instance
         const text = await extractTextFromPage(instance);
         console.log('Extracted text:', text);
         onTextExtracted(text);
@@ -73,7 +83,7 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
         URL.revokeObjectURL(blobUrl);
       }
     };
-  }, [document, onTextExtracted]);
+  }, [documentUrl, onTextExtracted]);
 
   return <div ref={containerRef} style={{ width: "100%", height: "100vh" }} />;
 }
