@@ -61,7 +61,6 @@ const DocsTabComponent = ({
                 ) : (
                   <div className="loading-thumbnail">
                     <div className="loading-spinner"></div>
-                    <span className="loading-text">Generating preview...</span>
                   </div>
                 )}
               </div>
