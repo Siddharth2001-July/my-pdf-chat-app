@@ -40,7 +40,7 @@
     margin-bottom: 16px;
     overflow: hidden;
     border-radius: 8px;
-    background-color: #F2F2F2;
+    background-color: transparent;
   }
   
   .thumbnail {
@@ -55,13 +55,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #E6E6E6;
+    background-color: transparent;
   }
   
   .loading-spinner {
     width: 24px;
     height: 24px;
-    border: 2px solid #4B9BFF;
+    border: 2px solid black;
     border-top: 2px solid transparent;
     border-radius: 50%;
     animation: spin 1s linear infinite;

@@ -69,7 +69,7 @@ function App() {
       setUploadedFile(file);
 
       // Function to generate thumbnail with retry mechanism
-      const generateThumbnail = async (docId, maxRetries = 50, retryInterval = 500) => {
+      const generateThumbnail = async (docId, maxRetries = 100, retryInterval = 500) => {
         let retries = 0;
       
         while (retries < maxRetries) {
