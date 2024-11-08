@@ -1,0 +1,41 @@
+@config "../../tailwind.config.ts";
+@import 'src/styles/tailwind-styles.scss';
+
+body {
+  min-height: 100vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #dcdcdc;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #b9b9b9;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #989898;
+}
+
+/* Track */
+.dark ::-webkit-scrollbar-track {
+  background-color: #9a9a9a;
+}
+
+/* Handle */
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #595959;
+}
+
+/* Handle on hover */
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #424242;
+}

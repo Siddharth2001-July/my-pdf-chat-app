@@ -1,0 +1,137 @@
+.App {
+  display: flex;
+  height: 100vh;
+  padding: var(--bl-space-md);
+  gap: var(--bl-space-md);
+  box-sizing: border-box;
+  background-color: #efebe7;
+}
+
+button {
+  padding: 0.6em 1em;
+}
+
+.panel {
+  margin: var(--bl-space-xs) var(--bl-space-md);
+  border-radius: var(--bl-radius-lg);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 12px; /* Explicit 12px margin */
+}
+
+/* Define specific colors for each panel */
+.sidebar-panel {
+  background-color: #ffffff;
+  padding: var(--bl-space-md);
+  border-radius: var(--bl-radius-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-panel .button {
+  margin-bottom: var(--bl-space-md);
+}
+
+.sidebar-panel .list-item {
+  padding: var(--bl-space-sm);
+  border-radius: var(--bl-radius-md);
+  margin-bottom: var(--bl-space-sm);
+  cursor: pointer;
+}
+
+.sidebar-panel .list-item.selected {
+  background-color: #d1c4e9;
+  color: #333;
+}
+
+.sidebar-panel .icon-button {
+  margin-top: auto;
+}
+
+.sidebar-panel .list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.main-panel {
+  background-color: #ffffff;
+  padding: var(--bl-space-md);
+}
+
+.aside-panel {
+  background-color: #ebe3f8;
+  padding: var(--bl-space-md);
+}
+
+/* Improved hover styles for interactive elements */
+.sidebar-panel:hover,
+.aside-panel:hover,
+.main-panel:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Style for resizing handles */
+.PanelResizeHandle {
+  margin: 0 8px;
+  cursor: col-resize;
+  background-color: #ccc;
+  width: 4px;
+  border-radius: 2px;
+}
+
+/* Make the Panel edges rounded to avoid sharp borders */
+[data-panel] {
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+button {
+  background-color: #f4f4f4;
+  color: #212121;
+  border-radius: 5px;
+  padding: 0.6em 1.2em;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #d1c4e9;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
