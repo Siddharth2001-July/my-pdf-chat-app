@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "pspdfAssets": "cp -R ./node_modules/pspdfkit/dist/pspdfkit-lib public/pspdfkit-lib"
   },
   "dependencies": {
     "@baseline-ui/core": "^0.31.0",
