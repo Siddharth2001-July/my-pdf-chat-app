@@ -77,6 +77,7 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
     return () => {
       if (PSPDFKit) {
         PSPDFKit.unload(container);
+        window.instance = undefined;
       }
       // Clean up the blob URL if it was created
       if (blobUrl) {

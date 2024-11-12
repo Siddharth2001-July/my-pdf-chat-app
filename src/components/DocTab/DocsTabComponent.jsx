@@ -1,4 +1,4 @@
-import { ActionButton, Box } from "@baseline-ui/core";
+import { ActionButton, Box, ProgressSpinner } from "@baseline-ui/core";
 import { PlusIcon } from "@baseline-ui/icons/12";
 import { useRef } from "react";
 import "./DocsTabComponents.css";
@@ -59,9 +59,7 @@ const DocsTabComponent = ({
                 {doc.thumbnail ? (
                   <img src={doc.thumbnail} alt={`${doc.name} preview`} />
                 ) : (
-                  <div className="loading-thumbnail">
-                    <div className="loading-spinner"></div>
-                  </div>
+                  <ProgressSpinner aria-label={"Label"} size="md" style={{color: "black" }} />
                 )}
               </div>
               <div className="document-name">

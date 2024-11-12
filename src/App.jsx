@@ -17,6 +17,7 @@ import {
 import { PlusIcon } from "@baseline-ui/icons/12";
 import "./App.css";
 import DocsTabComponent from "./components/DocTab/DocsTabComponent"
+import {pdfCache} from './utils/pdfCache'
 
 function App() {
   const [messages, setMessages] = useState([
