@@ -248,6 +248,7 @@ function App() {
                       onSelectDocument={handleSelectDocument}
                       isUploading={isUploading}
                       onFileUpload={handleFileUpload}
+                      onDeleteDocument={handleDeleteDocument}
                     />
                   </TabItem>
                 </Tabs>
