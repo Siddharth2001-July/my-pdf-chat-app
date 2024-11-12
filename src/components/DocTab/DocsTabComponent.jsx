@@ -28,7 +28,7 @@ const DocsTabComponent = ({
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "93vh" }}>
       <div style={{ overflowY: "auto", flex: 1 }}>
         <input
           ref={fileInputRef}
@@ -82,7 +82,8 @@ const DocsTabComponent = ({
             </div>
           ))}
         </div>
-        {documents.length > 0 ? (
+      </div>
+      {documents.length > 0 ? (
           <div className="docs-tab-footer">
             <DocsTabFooter
             selectedDocumentId={selectedDocumentId}
@@ -90,7 +91,6 @@ const DocsTabComponent = ({
             />
           </div>
         ) : null}
-      </div>
     </div>
   );
 };

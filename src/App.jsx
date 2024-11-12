@@ -198,6 +198,10 @@ function App() {
 
   const handleDeleteDocument = async (id) => {
     try {
+      // Add confirmation prompt before deletion
+      if (!window.confirm("Are you sure you want to delete this document?")) {
+        return;
+      }
       await pdfCache.deletePdf(id);
       setDocuments((prevDocs) => prevDocs.filter((doc) => doc.id !== id));
       if (selectedDocumentId === id) {
