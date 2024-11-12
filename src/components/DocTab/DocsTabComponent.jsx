@@ -26,7 +26,7 @@ const DocsTabComponent = ({
   };
 
   return (
-    <div>
+    <div style={{ overflow: 'auto', maxHeight: '50rem' }}>
       <input
         ref={fileInputRef}
         type="file"
@@ -34,12 +34,16 @@ const DocsTabComponent = ({
         onChange={handleFileChange}
         style={{ display: "none" }}
       />
-      <ActionButton
-        label="Upload PDF"
-        iconBefore={PlusIcon}
-        onPress={handleUploadClick}
-        className="button"
-      />
+      <Box
+        borderRadius="full"
+        padding={["2xl", "3xl", "4xl"]}
+        className={`list-item`}
+        onClick={handleUploadClick}
+        backgroundColor="background.primary.strong"
+        style={{ margin: '15px 0px', padding: "40px", width: "" }}
+      >
+        <PlusIcon />
+      </Box>
       <div className="list">
         {documents.map((doc) => (
           <div>
@@ -59,7 +63,11 @@ const DocsTabComponent = ({
                 {doc.thumbnail ? (
                   <img src={doc.thumbnail} alt={`${doc.name} preview`} />
                 ) : (
-                  <ProgressSpinner aria-label={"Label"} size="md" style={{color: "black" }} />
+                  <ProgressSpinner
+                    aria-label={"Label"}
+                    size="md"
+                    style={{ color: "black" }}
+                  />
                 )}
               </div>
               <div className="document-name">

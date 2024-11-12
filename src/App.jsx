@@ -83,6 +83,7 @@ function App() {
             }
       
             const thumbnailUrl = await window.instance.renderPageAsImageURL({ width: 200 }, 0);
+
             const updatedDoc = {
               ...newDoc,
               thumbnail: thumbnailUrl,
@@ -204,7 +205,7 @@ function App() {
             {/* Sidebar for File Upload */}
             <Panel
               order={1}
-              defaultSize={15}
+              defaultSize={22}
               minSize={10}
               className="panel sidebar-panel"
             >
