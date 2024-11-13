@@ -40,8 +40,9 @@ button {
 }
 
 .sidebar-panel .list-item.selected {
-  background-color: #d1c4e9;
+  background-color: #eceaf0;
   color: #333;
+  font-weight: 600;
 }
 
 .sidebar-panel .icon-button {
@@ -134,34 +135,4 @@ button:hover {
 
 .read-the-docs {
   color: #888;
-}
-
-
-
-.list {
-  margin: 10px 5px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px; /* Creates consistent spacing between items */
-}
-
-.list > div {
-  flex: 0 0 150px; /* Fixed width but allows wrapping */
-  height: 150px;
-  text-align: center;
-}
-
-/* The inner content div */
-.list-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.list-item img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  margin-bottom: 5px;
 }
