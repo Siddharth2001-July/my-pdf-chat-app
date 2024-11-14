@@ -1,5 +1,4 @@
 import { Panel, Box, Tabs, TabItem } from "@baseline-ui/core";
-import DocsTabComponent from "../DocTab/DocsTabComponent";
 
 const Sidebar = ({
   selectedTab,
@@ -22,7 +21,7 @@ const Sidebar = ({
           {children}
         </TabItem>
         <TabItem value="generate" title="Generate">
-          {/* Generate tab content */}
+          {children}
         </TabItem>
       </Tabs>
     </Box>

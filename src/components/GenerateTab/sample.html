@@ -1,0 +1,100 @@
+<!-- iframe's index.html or main JavaScript file -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PDF Chat App</title>
+  </head>
+  <body>
+    <div id="sidebar">
+      <!-- Existing sidebar UI will remain here -->
+      <h2>Original Sidebar UI</h2>
+      <!-- ... existing sidebar content ... -->
+    </div>
+
+    <div id="externalSidebar">
+      <!-- New sidebar UI rendered from Salesforce data -->
+      <h2>External Sidebar UI</h2>
+      <div id="placeholdersContainer"></div>
+    </div>
+
+    <script>
+      // Listen for messages from the parent window
+      window.addEventListener("message", (event) => {
+        // For security, verify the origin of the message --> not necessary
+        const allowedOrigin = "https://your-salesforce-domain.com"; // Replace with your Salesforce domain
+        if (event.origin !== allowedOrigin) {
+          console.warn(
+            "Received message from unauthorized origin:",
+            event.origin
+          );
+          return;
+        }
+
+        try {
+          // Parse the received data
+          const data = JSON.parse(event.data);
+
+          // Check if the payload contains placeholders
+          if (data.placeholders) {
+            console.log("Received placeholders data:", data.placeholders);
+            renderExternalSidebar(data.placeholders);
+          } else {
+            console.warn("Received message without placeholders:", data);
+          }
+        } catch (error) {
+          console.error("Error parsing message data:", error);
+        }
+      });
+
+      // Function to render placeholders in the external sidebar
+      function renderExternalSidebar(placeholders) {
+        const container = document.getElementById("placeholdersContainer");
+        container.innerHTML = ""; // Clear existing content
+
+        placeholders.forEach((placeholder) => {
+          const {
+            placeholder: name,
+            values,
+            isDropdown,
+            templatePlaceholder,
+          } = placeholder;
+
+          const fieldContainer = document.createElement("div");
+          fieldContainer.className = "field-container";
+
+          const label = document.createElement("label");
+          label.textContent = name;
+          label.htmlFor = templatePlaceholder;
+          fieldContainer.appendChild(label);
+
+          if (isDropdown) {
+            const select = document.createElement("select");
+            select.id = templatePlaceholder;
+            select.name = templatePlaceholder;
+
+            values.forEach((optionValue) => {
+              const option = document.createElement("option");
+              option.value = optionValue;
+              option.textContent = optionValue;
+              select.appendChild(option);
+            });
+
+            fieldContainer.appendChild(select);
+          } else {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.id = templatePlaceholder;
+            input.name = templatePlaceholder;
+            input.value = values ? values.join(", ") : ""; // Assuming 'values' is an array
+            fieldContainer.appendChild(input);
+          }
+
+          container.appendChild(fieldContainer);
+        });
+
+        console.log("External sidebar UI updated.");
+      }
+    </script>
+  </body>
+</html>

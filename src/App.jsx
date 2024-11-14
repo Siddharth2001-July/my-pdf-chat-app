@@ -8,6 +8,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import MainPanel from "./components/MainPanel/MainPanel";
 import ChatPanel from "./components/ChatPanel/ChatPanel";
 import DocsTabComponent from "./components/DocTab/DocsTabComponent";
+import GenerateTabComponent from "./components/GenerateTab/GenerateTabComponent";
 
 function App() {
   const [selectedTab, setSelectedTab] = useState("generate");
@@ -38,14 +39,19 @@ function App() {
           onFileUpload={handleFileUpload}
           onDeleteDocument={handleDeleteDocument}
         >
-          <DocsTabComponent
-            documents={documents}
-            selectedDocumentId={selectedDocumentId}
-            onSelectDocument={handleSelectDocument}
-            isUploading={isUploading}
-            onFileUpload={handleFileUpload}
-            onDeleteDocument={handleDeleteDocument}
-          />
+          {selectedTab == "docs" && (
+            <DocsTabComponent
+              documents={documents}
+              selectedDocumentId={selectedDocumentId}
+              onSelectDocument={handleSelectDocument}
+              isUploading={isUploading}
+              onFileUpload={handleFileUpload}
+              onDeleteDocument={handleDeleteDocument}
+            />
+          )}
+          {selectedTab == "generate" && (
+            <GenerateTabComponent />
+          )}
         </Sidebar>
 
         <PanelResizeHandle />
