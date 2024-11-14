@@ -1,0 +1,47 @@
+{
+  "placeholders": [
+    {
+      "placeholder": "Header",
+      "isDropdown": true,
+      "values": ["Yes", "No"],
+      "templatePlaceholder": "HEADER"
+    },
+    {
+      "placeholder": "Date",
+      "value": "Wednesday, November 13, 2024",
+      "isDropdown": false,
+      "templatePlaceholder": "$DATE"
+    },
+    {
+      "placeholder": "Case Name",
+      "value": "MISSING-DATA",
+      "error": "Error fetching data: undefined",
+      "isDropdown": false,
+      "templatePlaceholder": "Case Name+Case.BD_Case_Name__c"
+    },
+    {
+      "placeholder": "Account First Name",
+      "value": "America/Los_Angeles",
+      "isDropdown": false,
+      "templatePlaceholder": "Account First Name+Case.BusinessHoursId.TimeZoneSidKey"
+    },
+    {
+      "placeholder": "Evidence Name",
+      "values": ["No values found", "uio"],
+      "error": "Error fetching data: undefined",
+      "isDropdown": false,
+      "templatePlaceholder": "Evidence Name+BD_Evidence__c.Name"
+    },
+    {
+      "placeholder": "Evidence Case",
+      "value": "MISSING-DATA",
+      "error": "Error fetching data: undefined",
+      "isDropdown": false,
+      "templatePlaceholder": "Evidence Case+BD_Evidence__c.BD_Case__c.BD_Case_Name__c"
+    }
+  ],
+  "recordId": "500Dp000004njE8IAI",
+  "objectApiName": "Case",
+  "documentId": "a07Dp0000022PfLIAU",
+  "templateName": "Reference Template"
+}
