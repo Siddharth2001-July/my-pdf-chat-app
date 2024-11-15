@@ -6,12 +6,11 @@ const GenerateTabComponent = () => {
   const [placeholders, setPlaceholders] = useState(
     placeholderData.placeholders
   );
-  const [formData, setFormData] = useState(placeholders);
 
   useEffect(() => {
     const handleMessage = (event) => {
       // For security, verify the origin of the message
-      const allowedOrigin = "https://your-salesforce-domain.com";
+      const allowedOrigin = import.meta.env.VITE_SALESFORCE_DOMAIN;
 
       if (event.origin !== allowedOrigin) {
         console.warn(
@@ -26,7 +25,6 @@ const GenerateTabComponent = () => {
         if (data.placeholders) {
           console.log("Received placeholders data:", data.placeholders);
           setPlaceholders(data.placeholders);
-          setFormData(data.placeholders);
         } else {
           console.warn("Received message without placeholders:", data);
         }
@@ -44,15 +42,8 @@ const GenerateTabComponent = () => {
   }, []); // Empty dependency array means this effect runs once on mount
 
   const handleInputChange = (templatePlaceholder, value) => {
-    setFormData((prevPlaceholders) =>
-      prevPlaceholders.map((p) => {
-        if (p.templatePlaceholder === templatePlaceholder) {
-          if (p.value) return { ...p, value: value };
-          else return { ...p, values: [value] };
-        } else {
-          return p;
-        }
-      })
+    setPlaceholders((prevPlaceholders) =>
+      prevPlaceholders.map((p) => p.templatePlaceholder === templatePlaceholder ? { ...p, value: value } : p)
     );
   };
 
@@ -101,18 +92,28 @@ const GenerateTabComponent = () => {
             )}
           </Box>
         ))}
-        <div style={{ display: 'flex', justifyContent: 'space-between', margin: "10px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            margin: "10px",
+          }}
+        >
           <ActionButton
             label="Edit"
             style={{ backgroundColor: "#F0C968", color: "#FFFFFF" }}
             size="lg"
-            onPress={()=>{window.alert("Edit clicked!")}}
+            onPress={() => {
+              window.alert("Edit clicked!");
+            }}
           />
           <ActionButton
             label="Submit"
             style={{ backgroundColor: "#6EB579", color: "#FFFFFF" }}
             size="lg"
-            onPress={()=>{window.alert("Submit clicked!")}}
+            onPress={() => {
+              window.alert("Submit clicked!");
+            }}
           />
         </div>
       </Box>
