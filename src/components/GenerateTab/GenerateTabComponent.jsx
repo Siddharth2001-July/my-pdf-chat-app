@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import placeholderData from "../../assets/payload.json";
 import { ActionButton, Box, Select, TextInput } from "@baseline-ui/core";
+import "./GenerateTabComponent.css"
 
-const GenerateTabComponent = () => {
+const GenerateTabComponent = ({onEditDocument}) => {
   const [placeholders, setPlaceholders] = useState(
     placeholderData.placeholders
   );
@@ -94,25 +95,25 @@ const GenerateTabComponent = () => {
         ))}
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
+            display: "block",
+            // justifyContent: "space-between",
             margin: "10px",
           }}
         >
           <ActionButton
-            label="Edit"
-            style={{ backgroundColor: "#F0C968", color: "#FFFFFF" }}
+            label="Edit Document"
+            className="action-button action-button-edit"
+            // style={{ backgroundColor: "#6EB579", width: "100%", color: "#FFFFFF", display: "block", margin: "5px 0px" }}
             size="lg"
-            onPress={() => {
-              window.alert("Edit clicked!");
-            }}
+            onPress={onEditDocument}
           />
           <ActionButton
-            label="Submit"
-            style={{ backgroundColor: "#6EB579", color: "#FFFFFF" }}
+            label="Generate"
+            className="action-button action-button-generate"
+            // style={{ backgroundColor: "#F0C968", width: "100%", color: "#FFFFFF" , display: "block", margin: "5px 0px" }}
             size="lg"
             onPress={() => {
-              window.alert("Submit clicked!");
+              window.alert("Generate clicked!");
             }}
           />
         </div>

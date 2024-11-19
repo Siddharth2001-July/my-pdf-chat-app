@@ -35,6 +35,13 @@ function App() {
     // sidebarSize < 15 ? setIsSidebarOpen(false) : setIsSidebarOpen(true);
   };
 
+  const [mainPanelContent, setMainPanelContent] = useState("WEB_SDK");
+  const onEditDocument = () => {
+    // window.alert("on edit");
+    setMainPanelContent("DOC_AUTH");
+    
+  }
+
   return (
     <div className="App">
       <MainLayout setOnLayout={handleLayout} panelGroupRef={panelGroupRef}>
@@ -60,7 +67,7 @@ function App() {
               onDeleteDocument={handleDeleteDocument}
             />
           )}
-          {selectedTab == "generate" && <GenerateTabComponent />}
+          {selectedTab == "generate" && <GenerateTabComponent onEditDocument={onEditDocument} />}
         </Sidebar>
 
         <PanelResizeHandle />
@@ -69,6 +76,7 @@ function App() {
           key={"MainPanel"}
           uploadedFile={uploadedFile}
           onTextExtracted={setExtractedText}
+          mainPanelContent = {mainPanelContent}
         />
 
         <PanelResizeHandle />

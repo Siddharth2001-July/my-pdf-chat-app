@@ -1,4 +1,4 @@
-import { Panel, Box, Tabs, TabItem, ToggleIconButton } from "@baseline-ui/core";
+import { Panel, Box, Tabs, TabItem, ToggleIconButton, Text } from "@baseline-ui/core";
 import { CaretLeftIcon, CaretRightIcon } from "@baseline-ui/icons/20";
 import { useState } from "react";
 
@@ -28,6 +28,10 @@ const Sidebar = ({
       ref={sidebarRef}
     >
       <Box padding="md">
+        <Text size="lg" style={{display: "inline-block", height: '4vh'}}>
+          {selectedTab == "generate" ? (<>Generate Document</>):null}
+          {selectedTab == "docs" ? (<>Documents</>):null}           
+        </Text>
         {/* <ToggleIconButton
           aria-label="Toggle Icon Button"
           icon={{
