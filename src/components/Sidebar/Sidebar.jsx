@@ -28,7 +28,7 @@ const Sidebar = ({
       ref={sidebarRef}
     >
       <Box padding="md">
-        <ToggleIconButton
+        {/* <ToggleIconButton
           aria-label="Toggle Icon Button"
           icon={{
             selected: CaretRightIcon,
@@ -36,7 +36,7 @@ const Sidebar = ({
           }}
           size="sm"
           onChange={collapse}
-        />
+        /> */}
         {isCollapsed ? null : (
           <Tabs
             aria-label="Document Types"
