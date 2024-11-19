@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PanelResizeHandle } from "@baseline-ui/core";
 import "./App.css";
 import { usePdfManager } from "./hooks/usePdfManager";
@@ -12,6 +12,8 @@ import GenerateTabComponent from "./components/GenerateTab/GenerateTabComponent"
 
 function App() {
   const [selectedTab, setSelectedTab] = useState("generate");
+  const panelGroupRef = useRef(null);
+  const sidebarRef = useRef(null);
 
   const {
     documents,
@@ -26,10 +28,18 @@ function App() {
   const { messages, extractedText, setExtractedText, handleChatMessageSubmit } =
     useChat();
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const handleLayout = (e) => {
+    const sidebarSize = e[0];
+    // sidebarSize < 15 ? setIsSidebarOpen(false) : setIsSidebarOpen(true);
+  };
+
   return (
     <div className="App">
-      <MainLayout>
+      <MainLayout setOnLayout={handleLayout} panelGroupRef={panelGroupRef}>
         <Sidebar
+          key={"Sidebar"}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
           documents={documents}
@@ -38,6 +48,7 @@ function App() {
           isUploading={isUploading}
           onFileUpload={handleFileUpload}
           onDeleteDocument={handleDeleteDocument}
+          sidebarRef={sidebarRef}
         >
           {selectedTab == "docs" && (
             <DocsTabComponent
@@ -49,14 +60,13 @@ function App() {
               onDeleteDocument={handleDeleteDocument}
             />
           )}
-          {selectedTab == "generate" && (
-            <GenerateTabComponent />
-          )}
+          {selectedTab == "generate" && <GenerateTabComponent />}
         </Sidebar>
 
         <PanelResizeHandle />
 
         <MainPanel
+          key={"MainPanel"}
           uploadedFile={uploadedFile}
           onTextExtracted={setExtractedText}
         />
@@ -64,6 +74,7 @@ function App() {
         <PanelResizeHandle />
 
         <ChatPanel
+          key={"ChatPanel"}
           messages={messages}
           onMessageSubmit={handleChatMessageSubmit}
         />
