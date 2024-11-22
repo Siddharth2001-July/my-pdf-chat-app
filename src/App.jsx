@@ -39,8 +39,11 @@ function App() {
   const onEditDocument = () => {
     // window.alert("on edit");
     setMainPanelContent("DOC_AUTH");
-    
-  }
+  };
+
+  const onGenerateDocument = () => {
+    setMainPanelContent("WEB_SDK");
+  };
 
   return (
     <div className="App">
@@ -67,19 +70,21 @@ function App() {
               onDeleteDocument={handleDeleteDocument}
             />
           )}
-          {selectedTab == "generate" && <GenerateTabComponent onEditDocument={onEditDocument} />}
+          {selectedTab == "generate" && (
+            <GenerateTabComponent onEditDocument={onEditDocument} onGenerateDocument={onGenerateDocument} />
+          )}
         </Sidebar>
 
-        <PanelResizeHandle />
+        <PanelResizeHandle className="resizeBar" />
 
         <MainPanel
           key={"MainPanel"}
           uploadedFile={uploadedFile}
           onTextExtracted={setExtractedText}
-          mainPanelContent = {mainPanelContent}
+          mainPanelContent={mainPanelContent}
         />
 
-        <PanelResizeHandle />
+        <PanelResizeHandle className="resizeBar" />
 
         <ChatPanel
           key={"ChatPanel"}

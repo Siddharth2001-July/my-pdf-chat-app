@@ -1,6 +1,7 @@
 import DocAuth from "@pspdfkit/document-authoring";
 import { useEffect, useState } from "react";
 import { ProgressSpinner } from "@baseline-ui/core";
+import defaultDocxFile from "../../assets/Sample Case Document.docx"
 
 const DocAuthViewer = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -8,13 +9,10 @@ const DocAuthViewer = () => {
     async function initializeDocAuth() {
       try {
         const docAuthSystem = await DocAuth.createDocAuthSystem();
+        const defaultDocument = await fetch(defaultDocxFile);
+        const defDocJSON = await docAuthSystem.importDOCX(defaultDocument);
         const editor = await docAuthSystem.createEditor(
-          document.getElementById("editor"),
-          {
-            document: await docAuthSystem.createDocumentFromPlaintext(
-              "Hi there!"
-            ),
-          }
+          document.getElementById("editor"), {document: defDocJSON}
         );
         setIsLoading(false);
       } catch (error) {

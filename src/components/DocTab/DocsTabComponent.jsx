@@ -36,7 +36,7 @@ const DocsTabComponent = ({
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "93vh" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "88vh" }}>
       <div style={{ overflowY: "auto", flex: 1 }}>
         <input
           ref={fileInputRef}

@@ -14,7 +14,7 @@
     "@baseline-ui/core": "^0.31.0",
     "@baseline-ui/recipes": "^0.31.0",
     "@baseline-ui/tokens": "^0.31.0",
-    "@pspdfkit/document-authoring": "^1.0.26",
+    "@pspdfkit/document-authoring": "^1.1.0",
     "pspdfkit": "^2024.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
