@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { PanelResizeHandle } from "@baseline-ui/core";
+import { DateFormat, PanelResizeHandle } from "@baseline-ui/core";
 import "./App.css";
 import { usePdfManager } from "./hooks/usePdfManager";
 import { useChat } from "./hooks/useChat";
@@ -42,9 +42,7 @@ function App() {
   const [docsTab, setDocsTab] = useState(null)
 
   useEffect(() => {
-    let postMessage = window.postMessage;
-    // For example
-    postMessage = {
+    let postMessage = {
       initialSDK: SDK.WEB_SDK,
       initialDocuments: [
         {
@@ -58,13 +56,31 @@ function App() {
       generateTab: {} || null,
       docsTab: {} || null
     };
+    const handleMessage = (event) => {
+      // For security, verify the origin of the message
+      const allowedOrigin = import.meta.env.VITE_SALESFORCE_DOMAIN;
 
-    if (window.postMessage) {
-      setMainPanelContent(postMessage.initialSDK);
-      setShowAIAssistant(postMessage.showAIAssistant);
-      setGenerateTab(postMessage.generateTab);
-      setDocsTab(postMessage.docsTab)
+      if (event.origin !== allowedOrigin) {
+        console.warn(
+          "Received message from unauthorized origin:",
+          event.origin
+        );
+        return;
+      }
+
+      const data = JSON.parse(event.data);
+      if (data) {
+        setMainPanelContent(data.initialSDK);
+        setShowAIAssistant(data.showAIAssistant);
+        setGenerateTab(data.generateTab);
+        setDocsTab(data.docsTab)
+      }
     }
+    window.addEventListener("message", handleMessage)
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
   }, []);
 
   const onEditDocument = () => {
@@ -106,6 +122,7 @@ function App() {
             <GenerateTabComponent
               onEditDocument={onEditDocument}
               onGenerateDocument={onGenerateDocument}
+              generateTab={generateTab}
             />
           )}
         </Sidebar>

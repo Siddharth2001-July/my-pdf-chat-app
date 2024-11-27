@@ -38,8 +38,8 @@ const Sidebar = ({
     >
       <Box padding="md">
         <Text size="lg" style={{ display: "inline-block", height: "4vh" }}>
-          {selectedTab == "generate" ? <>Generate Document</> : null}
-          {selectedTab == "docs" ? <>Documents</> : null}
+          {(generateTab && selectedTab == "generate") ? <>Generate Document</> : null}
+          {(docsTab && selectedTab == "docs") ? <>Documents</> : null}
         </Text>
         {/* <ToggleIconButton
           aria-label="Toggle Icon Button"
