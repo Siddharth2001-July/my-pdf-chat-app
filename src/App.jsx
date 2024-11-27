@@ -38,12 +38,14 @@ function App() {
 
   const [mainPanelContent, setMainPanelContent] = useState("WEB_SDK");
   const [showAIAssistant, setShowAIAssistant] = useState(true);
+  const [generateTab, setGenerateTab] = useState(null);
+  const [docsTab, setDocsTab] = useState(null)
 
   useEffect(() => {
     let postMessage = window.postMessage;
     // For example
     postMessage = {
-      initialSDK: SDK.DOC_AUTH,
+      initialSDK: SDK.WEB_SDK,
       initialDocuments: [
         {
           id: "initial1",
@@ -53,16 +55,19 @@ function App() {
         },
       ],
       showAIAssistant: false,
+      generateTab: {} || null,
+      docsTab: {} || null
     };
 
     if (window.postMessage) {
       setMainPanelContent(postMessage.initialSDK);
       setShowAIAssistant(postMessage.showAIAssistant);
+      setGenerateTab(postMessage.generateTab);
+      setDocsTab(postMessage.docsTab)
     }
   }, []);
 
   const onEditDocument = () => {
-    // window.alert("on edit");
     setMainPanelContent("DOC_AUTH");
   };
 
@@ -84,6 +89,8 @@ function App() {
           onFileUpload={handleFileUpload}
           onDeleteDocument={handleDeleteDocument}
           sidebarRef={sidebarRef}
+          docsTab={docsTab}
+          generateTab={generateTab}
         >
           {selectedTab == "docs" && (
             <DocsTabComponent

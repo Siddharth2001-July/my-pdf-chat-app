@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Panel } from "@baseline-ui/core";
 import PdfViewerComponent from "../PdfViewerComponent";
 import DocAuthViewer from "../DocAuth/DocAuthViewer";
 import './MainPanel.css';
 
-const AnimatedContent = ({ isVisible, children, index }) => {
+const AnimatedContent = ({ isVisible, isPrevious, children, contentType }) => {
   return (
     <div 
-      className={`animated-content ${isVisible ? 'visible' : ''}`}
+      className={`animated-content 
+        ${isVisible ? 'visible' : ''}
+        ${isPrevious ? (contentType === 'WEB_SDK' ? 'hidden-bottom' : 'hidden-top') : ''}`}
       style={{
-        transform: `translateY(${index * 100}%)`,
         zIndex: isVisible ? 1 : 0
       }}
     >
@@ -19,6 +20,14 @@ const AnimatedContent = ({ isVisible, children, index }) => {
 };
 
 const MainPanel = ({ uploadedFile, onTextExtracted, mainPanelContent }) => {
+  const [previousContent, setPreviousContent] = useState(null);
+  
+  useEffect(() => {
+    if (mainPanelContent !== previousContent) {
+      setPreviousContent(mainPanelContent);
+    }
+  }, [mainPanelContent]);
+
   const isPdfViewerVisible = mainPanelContent === "WEB_SDK";
   const isDocAuthVisible = mainPanelContent === "DOC_AUTH";
 
@@ -30,7 +39,11 @@ const MainPanel = ({ uploadedFile, onTextExtracted, mainPanelContent }) => {
       className="panel main-panel"
     >
       <div className="animation-container">
-        <AnimatedContent isVisible={isPdfViewerVisible} index={0}>
+        <AnimatedContent 
+          isVisible={isPdfViewerVisible}
+          isPrevious={previousContent === "DOC_AUTH"}
+          contentType="WEB_SDK"
+        >
           {uploadedFile ? (
             <PdfViewerComponent
               document={uploadedFile}
@@ -43,8 +56,12 @@ const MainPanel = ({ uploadedFile, onTextExtracted, mainPanelContent }) => {
           )}
         </AnimatedContent>
 
-        <AnimatedContent isVisible={isDocAuthVisible} index={1}>
-          {isDocAuthVisible && <DocAuthViewer />}
+        <AnimatedContent 
+          isVisible={isDocAuthVisible}
+          isPrevious={previousContent === "WEB_SDK"}
+          contentType="DOC_AUTH"
+        >
+          <DocAuthViewer />
         </AnimatedContent>
       </div>
     </Panel>
