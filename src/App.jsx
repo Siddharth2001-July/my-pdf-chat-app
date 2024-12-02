@@ -10,6 +10,7 @@ import ChatPanel from "./components/ChatPanel/ChatPanel";
 import DocsTabComponent from "./components/DocTab/DocsTabComponent";
 import GenerateTabComponent from "./components/GenerateTab/GenerateTabComponent";
 import { SDK } from "./constantsAndEnums/enums";
+import placeholderData from "./assets/payload.json";
 
 function App() {
   const [selectedTab, setSelectedTab] = useState("generate");
@@ -39,7 +40,7 @@ function App() {
   const [mainPanelContent, setMainPanelContent] = useState("WEB_SDK");
   const [showAIAssistant, setShowAIAssistant] = useState(true);
   const [generateTab, setGenerateTab] = useState(null);
-  const [docsTab, setDocsTab] = useState(null)
+  const [docsTab, setDocsTab] = useState(null);
 
   useEffect(() => {
     let postMessage = {
@@ -52,10 +53,16 @@ function App() {
           thumbnail: "",
         },
       ],
-      showAIAssistant: false,
-      generateTab: {} || null,
-      docsTab: {} || null
+      showAIAssistant: true,
+      generateTab: placeholderData || null,
+      docsTab: {} || null,
     };
+    if (postMessage) {
+      setMainPanelContent(postMessage.initialSDK);
+      setShowAIAssistant(postMessage.showAIAssistant);
+      setGenerateTab(postMessage.generateTab);
+      setDocsTab(postMessage.docsTab);
+    }
     const handleMessage = (event) => {
       // For security, verify the origin of the message
       const allowedOrigin = import.meta.env.VITE_SALESFORCE_DOMAIN;
@@ -73,10 +80,10 @@ function App() {
         setMainPanelContent(data.initialSDK);
         setShowAIAssistant(data.showAIAssistant);
         setGenerateTab(data.generateTab);
-        setDocsTab(data.docsTab)
+        setDocsTab(data.docsTab);
       }
-    }
-    window.addEventListener("message", handleMessage)
+    };
+    window.addEventListener("message", handleMessage);
     // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("message", handleMessage);
@@ -94,40 +101,44 @@ function App() {
   return (
     <div className="App">
       <MainLayout setOnLayout={handleLayout} panelGroupRef={panelGroupRef}>
-        <Sidebar
-          key={"Sidebar"}
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
-          documents={documents}
-          selectedDocumentId={selectedDocumentId}
-          onSelectDocument={handleSelectDocument}
-          isUploading={isUploading}
-          onFileUpload={handleFileUpload}
-          onDeleteDocument={handleDeleteDocument}
-          sidebarRef={sidebarRef}
-          docsTab={docsTab}
-          generateTab={generateTab}
-        >
-          {selectedTab == "docs" && (
-            <DocsTabComponent
+        {(docsTab || generateTab) && (
+          <>
+            <Sidebar
+              key={"Sidebar"}
+              selectedTab={selectedTab}
+              setSelectedTab={setSelectedTab}
               documents={documents}
               selectedDocumentId={selectedDocumentId}
               onSelectDocument={handleSelectDocument}
               isUploading={isUploading}
               onFileUpload={handleFileUpload}
               onDeleteDocument={handleDeleteDocument}
-            />
-          )}
-          {selectedTab == "generate" && (
-            <GenerateTabComponent
-              onEditDocument={onEditDocument}
-              onGenerateDocument={onGenerateDocument}
+              sidebarRef={sidebarRef}
+              docsTab={docsTab}
               generateTab={generateTab}
-            />
-          )}
-        </Sidebar>
+            >
+              {selectedTab == "docs" && (
+                <DocsTabComponent
+                  documents={documents}
+                  selectedDocumentId={selectedDocumentId}
+                  onSelectDocument={handleSelectDocument}
+                  isUploading={isUploading}
+                  onFileUpload={handleFileUpload}
+                  onDeleteDocument={handleDeleteDocument}
+                />
+              )}
+              {selectedTab == "generate" && (
+                <GenerateTabComponent
+                  onEditDocument={onEditDocument}
+                  onGenerateDocument={onGenerateDocument}
+                  generateTab={generateTab}
+                />
+              )}
+            </Sidebar>
 
-        <PanelResizeHandle className="resizeBar" />
+            <PanelResizeHandle className="resizeBar" />
+          </>
+        )}
 
         <MainPanel
           key={"MainPanel"}

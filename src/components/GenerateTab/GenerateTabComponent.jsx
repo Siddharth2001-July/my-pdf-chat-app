@@ -5,7 +5,7 @@ import "./GenerateTabComponent.css";
 
 const GenerateTabComponent = ({ onEditDocument, onGenerateDocument, generateTab }) => {
   const [placeholders, setPlaceholders] = useState(
-    generateTab
+    generateTab.placeholders
   );
   const [isGenerated, setIsGenerated] = useState(false);
 
@@ -40,6 +40,7 @@ const GenerateTabComponent = ({ onEditDocument, onGenerateDocument, generateTab 
           />
         )}
         {!isGenerated &&
+          placeholders && placeholders.length > 0 &&
           placeholders.map((placeholder) => (
             <Box
               key={`${placeholder.templatePlaceholder}FormBox`}
