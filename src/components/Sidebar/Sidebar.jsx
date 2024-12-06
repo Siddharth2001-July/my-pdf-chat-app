@@ -1,4 +1,11 @@
-import { Panel, Box, Tabs, TabItem, ToggleIconButton } from "@baseline-ui/core";
+import {
+  Panel,
+  Box,
+  Tabs,
+  TabItem,
+  ToggleIconButton,
+  Text,
+} from "@baseline-ui/core";
 import { CaretLeftIcon, CaretRightIcon } from "@baseline-ui/icons/20";
 import { useState } from "react";
 
@@ -8,6 +15,8 @@ const Sidebar = ({
   key,
   children,
   sidebarRef,
+  docsTab,
+  generateTab,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const collapse = (isCollapsed) => {
@@ -28,7 +37,11 @@ const Sidebar = ({
       ref={sidebarRef}
     >
       <Box padding="md">
-        <ToggleIconButton
+        <Text size="lg" style={{ display: "inline-block", height: "4vh" }}>
+          {(generateTab && selectedTab == "generate") ? <>Generate Document</> : null}
+          {(docsTab && selectedTab == "docs") ? <>Documents</> : null}
+        </Text>
+        {/* <ToggleIconButton
           aria-label="Toggle Icon Button"
           icon={{
             selected: CaretRightIcon,
@@ -36,19 +49,23 @@ const Sidebar = ({
           }}
           size="sm"
           onChange={collapse}
-        />
+        /> */}
         {isCollapsed ? null : (
           <Tabs
             aria-label="Document Types"
             selectedValue={selectedTab}
             onSelectionChange={setSelectedTab}
           >
-            <TabItem value="docs" title="Docs">
-              {children}
-            </TabItem>
-            <TabItem value="generate" title="Generate">
-              {children}
-            </TabItem>
+            {docsTab != null && (
+              <TabItem value="docs" title="Docs">
+                {children}
+              </TabItem>
+            )}
+            {generateTab != null && (
+              <TabItem value="generate" title="Generate">
+                {children}
+              </TabItem>
+            )}
           </Tabs>
         )}
       </Box>

@@ -15,4 +15,5 @@ export default defineConfig({
     }),
   ],
   publicDir: "public", // Ensure your `pspdfkit-lib` is in this folder
+  assetsInclude: ["**/*.docx", '**/*.pdf']
 });
