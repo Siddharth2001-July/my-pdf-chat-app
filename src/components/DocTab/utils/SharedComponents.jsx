@@ -1,4 +1,3 @@
-import {ProgressSpinner} from "@baseline-ui/core"
 export const DocumentPreview = ({ document }) => (
   <div>
     {document.thumbnail ? (
