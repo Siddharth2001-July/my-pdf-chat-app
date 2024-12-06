@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { pdfCache } from "../utils/pdfCache";
-import defaultPdf from "../assets/Sample Case Document.pdf";
+import { useState, useEffect, useCallback } from 'react';
+import { pdfCache } from '../utils/pdfCache';
 
 export const usePdfManager = () => {
   const [documents, setDocuments] = useState([]);
@@ -9,57 +8,27 @@ export const usePdfManager = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
-    const loadPdfs = async () => {
+    const loadCachedPdfs = async () => {
       try {
-        // Check if default PDF exists in cache first
         const cachedPdfs = await pdfCache.getAllPdfs();
-        let defaultDoc = cachedPdfs.find(doc => doc.id === 'default');
-
-        // If default doesn't exist in cache, create and cache it
-        if (!defaultDoc) {
-          const response = await fetch(defaultPdf);
-          const blob = await response.blob();
-          const file = new File([blob], 'default.pdf', { type: 'application/pdf' });
-
-          defaultDoc = {
-            id: 'default',
-            name: 'Default Document',
-            file: file,
-            thumbnail: '',
-          };
-          setSelectedDocumentId('default');
-          setUploadedFile(defaultDoc.file);
-          defaultDoc.thumbnail = await generateThumbnail(defaultDoc)
+        if (cachedPdfs.length > 0) {
+          setDocuments(cachedPdfs);
         }
-
-        // Filter out default from cached PDFs to avoid duplication
-        const otherCachedPdfs = cachedPdfs.filter(doc => doc.id !== 'default');
-        
-        // Set documents with default first
-        setDocuments([defaultDoc, ...otherCachedPdfs]);
-        setSelectedDocumentId('default');
-        setUploadedFile(defaultDoc.file);
       } catch (error) {
-        console.error("Error loading PDFs:", error);
+        console.error("Error loading cached PDFs:", error);
       }
     };
 
-    loadPdfs();
+    loadCachedPdfs();
   }, []);
 
-  const generateThumbnail = async (
-    doc,
-    maxRetries = 100,
-    retryInterval = 500
-  ) => {
+  const generateThumbnail = async (doc, maxRetries = 100, retryInterval = 500) => {
     let retries = 0;
 
     while (retries < maxRetries) {
       try {
         if (!window.instance) {
-          console.log(
-            `Waiting for PDF to load... (Attempt ${retries + 1}/${maxRetries})`
-          );
+          console.log(`Waiting for PDF to load... (Attempt ${retries + 1}/${maxRetries})`);
           await new Promise((resolve) => setTimeout(resolve, retryInterval));
           retries++;
           continue;
@@ -103,31 +72,23 @@ export const usePdfManager = () => {
       thumbnail: "",
     };
 
-    setDocuments((prev) => [...prev, newDoc]);
+    setDocuments(prev => [...prev, newDoc]);
     setSelectedDocumentId(newDoc.id);
     setUploadedFile(file);
 
     await generateThumbnail(newDoc);
   };
 
-  const handleSelectDocument = useCallback(
-    (id) => {
-      setSelectedDocumentId(id);
-      const selectedDoc = documents.find((doc) => doc.id === id);
-      if (selectedDoc) {
-        setUploadedFile(selectedDoc.file);
-      }
-    },
-    [documents]
-  );
+  const handleSelectDocument = useCallback( (id) => {
+    setSelectedDocumentId(id);
+    const selectedDoc = documents.find((doc) => doc.id === id);
+    if (selectedDoc) {
+      setUploadedFile(selectedDoc.file);
+    }
+  }, [documents]);
 
   const handleDeleteDocument = async (id) => {
     try {
-      if (id === 'default') {
-        console.warn("Cannot delete default document");
-        return;
-      }
-
       if (!window.confirm("Are you sure you want to delete this document?")) {
         return;
       }
