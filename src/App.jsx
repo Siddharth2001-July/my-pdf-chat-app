@@ -70,7 +70,7 @@ function App() {
       if (event.origin !== allowedOrigin) {
         console.warn(
           "Received message from unauthorized origin:",
-          event.origin
+          event.origin,
         );
         return;
       }
