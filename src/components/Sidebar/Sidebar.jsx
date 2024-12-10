@@ -35,13 +35,12 @@ const Sidebar = ({
       collapsedSize={5}
       minSize={5}
       ref={sidebarRef}
+      style={
+        isCollapsed ? { backgroundColor: "#efebe7", boxShadow: "0 0" } : {}
+      }
     >
       <Box padding="md">
-        <Text size="lg" style={{ display: "inline-block", height: "4vh" }}>
-          {(generateTab && selectedTab == "generate") ? <>Generate Document</> : null}
-          {(docsTab && selectedTab == "docs") ? <>Documents</> : null}
-        </Text>
-        {/* <ToggleIconButton
+        <ToggleIconButton
           aria-label="Toggle Icon Button"
           icon={{
             selected: CaretRightIcon,
@@ -49,24 +48,33 @@ const Sidebar = ({
           }}
           size="sm"
           onChange={collapse}
-        /> */}
+        />
+
         {isCollapsed ? null : (
-          <Tabs
-            aria-label="Document Types"
-            selectedValue={selectedTab}
-            onSelectionChange={setSelectedTab}
-          >
-            {docsTab != null && (
-              <TabItem value="docs" title="Docs">
-                {children}
-              </TabItem>
-            )}
-            {generateTab != null && (
-              <TabItem value="generate" title="Generate">
-                {children}
-              </TabItem>
-            )}
-          </Tabs>
+          <>
+            <Text size="lg" style={{ display: "inline-block", height: "4vh", margin: '5px 10px' }}>
+              {generateTab && selectedTab == "generate" ? (
+                <>Generate Document</>
+              ) : null}
+              {docsTab && selectedTab == "docs" ? <>Documents</> : null}
+            </Text>
+            <Tabs
+              aria-label="Document Types"
+              selectedValue={selectedTab}
+              onSelectionChange={setSelectedTab}
+            >
+              {docsTab != null && (
+                <TabItem value="docs" title="Docs">
+                  {children}
+                </TabItem>
+              )}
+              {generateTab != null && (
+                <TabItem value="generate" title="Generate">
+                  {children}
+                </TabItem>
+              )}
+            </Tabs>
+          </>
         )}
       </Box>
     </Panel>
