@@ -8,11 +8,11 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
     try {
       const textLines = await instance.textLinesForPageIndex(pageIndex);
       let pageText = '';
-      
+
       textLines.forEach(function (textLine) {
         pageText += textLine.contents + '\n';
       });
-      
+
       return pageText;
     } catch (error) {
       console.error('Error extracting text:', error);
@@ -61,9 +61,25 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
           container,
           document: documentUrl,
           baseUrl: `${window.location.protocol}//${window.location.host}/`,
-          licenseKey: import.meta.env.VITE_PSPDFKIT_LICENSE_KEY
+          licenseKey: import.meta.env.VITE_PSPDFKIT_LICENSE_KEY,
+          styleSheets: ['./customPSPDFKit.css']
         });
         window.instance = instance
+        instance.addEventListener(
+          "viewState.change",
+          (viewState, previousViewState) => {
+            if (
+              viewState.get("interactionMode") ===
+              PSPDFKit.InteractionMode.DOCUMENT_EDITOR
+            ) {
+              setTimeout(() => {
+                const docEditDiv = instance.contentDocument.querySelector('section.cjv3et0.PSPDFKit-Modal-Dialog');
+                docEditDiv.style.maxWidth = '50vw';
+                console.log(docEditDiv);
+              }, 10);
+            }
+          }
+        );
         const text = await extractTextFromPage(instance);
         console.log('Extracted text:', text);
         onTextExtracted(text);
