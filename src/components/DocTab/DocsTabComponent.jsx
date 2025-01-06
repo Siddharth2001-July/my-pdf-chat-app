@@ -1,30 +1,13 @@
-import {
-  Box,
-  ImageDropZone,
-  NumberInput,
-  ProgressSpinner,
-  Select,
-} from "@baseline-ui/core";
-import { PlusIcon } from "@baseline-ui/icons/12";
 import { useRef } from "react";
 import "./DocsTabComponents.css";
 import { DocsTabFooter } from "./DocsTabFooter";
-import { EllipseIcon, SquareIcon, PolygonIcon } from "@baseline-ui/icons/24";
 import DocumentList from "./utils/DocumentList";
 
-const DocsTabComponent = ({
-  documents,
-  selectedDocumentId,
-  onSelectDocument,
-  isUploading,
-  onFileUpload,
-  onDeleteDocument,
-}) => {
+const DocsTabComponent = ({onSelectDocument, selectedDocumentId, isUploading, onFileUpload, onDeleteDocument, documents}) => {
   const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
     const file = event.target?.files?.[0];
-    console.log("File selected:", file);
 
     if (file) {
       onFileUpload(file);
@@ -34,26 +17,22 @@ const DocsTabComponent = ({
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
-
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "93vh" }}>
-      <div style={{ overflowY: "auto", flex: 1 }}>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".pdf"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
+    <div style={{ display: "flex", flexDirection: "column", height: "86vh", justifyContent: 'space-between' }}>
+      <div
+        className="document-list"
+      >
         <DocumentList
+          handleFileChange={handleFileChange}
           documents={documents}
+          fileInputRef={fileInputRef}
           selectedDocumentId={selectedDocumentId}
           onSelectDocument={onSelectDocument}
           onUploadClick={handleUploadClick}
         />
       </div>
-      {documents.length > 0 && (
-        <div className="docs-tab-footer">
+      {selectedDocumentId && (
+        <div style={{ borderTop: "1px solid #F0F3F9" }}>
           <DocsTabFooter
             selectedDocumentId={selectedDocumentId}
             onDeleteDocument={onDeleteDocument}
@@ -63,5 +42,4 @@ const DocsTabComponent = ({
     </div>
   );
 };
-
 export default DocsTabComponent;

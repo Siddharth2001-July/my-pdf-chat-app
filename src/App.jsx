@@ -1,19 +1,25 @@
-import { useRef, useState } from "react";
-import { PanelResizeHandle } from "@baseline-ui/core";
+import { useRef, useState, useEffect } from "react";
+import { ActionButton, PanelResizeHandle } from "@baseline-ui/core";
 import "./App.css";
 import { usePdfManager } from "./hooks/usePdfManager";
 import { useChat } from "./hooks/useChat";
 import MainLayout from "./components/Layout/MainLayout";
 import Sidebar from "./components/Sidebar/Sidebar";
 import MainPanel from "./components/MainPanel/MainPanel";
+import { AiIcon } from "@baseline-ui/icons/24";
 import ChatPanel from "./components/ChatPanel/ChatPanel";
-import DocsTabComponent from "./components/DocTab/DocsTabComponent";
-import GenerateTabComponent from "./components/GenerateTab/GenerateTabComponent";
+
+const DebugComponent = ({ uploadedFile }) => {
+  useEffect(() => {
+    console.log('Debug Component - uploadedFile:', uploadedFile);
+  }, [uploadedFile]);
+  return null;
+};
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState("generate");
-  const panelGroupRef = useRef(null);
-  const sidebarRef = useRef(null);
+  const panelGroupRef = useRef();
+  const sidebarRef = useRef();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const {
     documents,
@@ -25,23 +31,24 @@ function App() {
     handleDeleteDocument,
   } = usePdfManager();
 
-  const { messages, extractedText, setExtractedText, handleChatMessageSubmit } =
-    useChat();
-
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
+  const { messages, setExtractedText, handleChatMessageSubmit } = useChat();
+  const [chatPenalShow, setChatPenalShow] = useState(false);
   const handleLayout = (e) => {
     const sidebarSize = e[0];
-    // sidebarSize < 15 ? setIsSidebarOpen(false) : setIsSidebarOpen(true);
+    sidebarSize < 15 ? setIsSidebarOpen(false) : setIsSidebarOpen(true);
   };
+  // console.log(isOpen)
+
+  useEffect(() => {
+    console.log('App: uploadedFile changed:', uploadedFile);
+    console.log('App: selectedDocumentId changed:', selectedDocumentId);
+  }, [uploadedFile, selectedDocumentId]);
 
   return (
     <div className="App">
       <MainLayout setOnLayout={handleLayout} panelGroupRef={panelGroupRef}>
         <Sidebar
           key={"Sidebar"}
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
           documents={documents}
           selectedDocumentId={selectedDocumentId}
           onSelectDocument={handleSelectDocument}
@@ -49,35 +56,34 @@ function App() {
           onFileUpload={handleFileUpload}
           onDeleteDocument={handleDeleteDocument}
           sidebarRef={sidebarRef}
-        >
-          {selectedTab == "docs" && (
-            <DocsTabComponent
-              documents={documents}
-              selectedDocumentId={selectedDocumentId}
-              onSelectDocument={handleSelectDocument}
-              isUploading={isUploading}
-              onFileUpload={handleFileUpload}
-              onDeleteDocument={handleDeleteDocument}
-            />
-          )}
-          {selectedTab == "generate" && <GenerateTabComponent />}
-        </Sidebar>
+          isSidebarOpen={isSidebarOpen}
+        />
 
         <PanelResizeHandle />
-
+        <DebugComponent uploadedFile={uploadedFile} />
         <MainPanel
           key={"MainPanel"}
           uploadedFile={uploadedFile}
           onTextExtracted={setExtractedText}
+          selectedDocumentId={selectedDocumentId}
+          documents={documents}
         />
-
-        <PanelResizeHandle />
-
-        <ChatPanel
-          key={"ChatPanel"}
-          messages={messages}
-          onMessageSubmit={handleChatMessageSubmit}
-        />
+        {chatPenalShow && (
+          <ChatPanel
+            key={"ChatPanel"}
+            messages={messages}
+            setChatPenalShow={setChatPenalShow}
+            onMessageSubmit={handleChatMessageSubmit}
+          />
+        )}
+        {!chatPenalShow && (
+          <ActionButton
+            label={<AiIcon />}
+            variant="primary"
+            className="AiButton"
+            onClick={() => setChatPenalShow(!chatPenalShow)}
+          />
+        )}
       </MainLayout>
     </div>
   );

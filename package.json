@@ -11,9 +11,12 @@
     "pspdfAssets": "cp -R ./node_modules/pspdfkit/dist/pspdfkit-lib public/pspdfkit-lib"
   },
   "dependencies": {
-    "@baseline-ui/core": "^0.31.0",
+    "@baseline-ui/core": "^0.31.1",
+    "@baseline-ui/icons": "^0.34.0",
     "@baseline-ui/recipes": "^0.31.0",
-    "@baseline-ui/tokens": "^0.31.0",
+    "@baseline-ui/tokens": "^0.31.1",
+    "@pdf-lib/standard-fonts": "^1.0.0",
+    "pdfjs-dist": "^4.9.155",
     "pspdfkit": "^2024.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

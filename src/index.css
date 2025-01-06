@@ -5,7 +5,48 @@
 @tailwind components;
 @tailwind variants;
 @tailwind utilities;
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("/fonts/SFPRODISPLAYBLACKITALIC.OTF") format("opentype"),
+    url("/fonts/SFPRODISPLAYBOLD.OTF") format("opentype"),
+    url("/fonts/SFPRODISPLAYHEAVYITALIC.OTF") format("opentype"),
+    url("/fonts/SFPRODISPLAYLIGHTITALIC.OTF") format("opentype"),
+    url("/fonts/SFPRODISPLAYMEDIUM.OTF") format("opentype"),
+    url("/fonts/SFPRODISPLAYREGULAR.OTF") format("opentype"),
+    url("/fonts/SFPRODISPLAYSEMIBOLDITALIC.OTF") format("opentype"),
+    url("/fonts/SFPRODISPLAYTHINITALIC.OTF") format("opentype"),
+    url("/fonts/SFPRODISPLAYULTRALIGHTITALIC.OTF") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
 
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("fonts/SFPRODISPLAYREGULAR.OTF") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("fonts/SFPRODISPLAYBOLD.OTF") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("fonts/SFPRODISPLAYITALIC.OTF") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("fonts/SFPRODISPLAYBOLD.OTF") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+}
 /* Your other CSS rules below */
 
 @layer reset {
@@ -32,7 +73,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+body {
+  font-family: 'SF Pro Display' !important;
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -55,25 +98,6 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -85,4 +109,184 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+  svg {
+    color: #213547 !important;
+  }
+  .sidebar-panel {
+    background-color: #ffffff;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .sidebar-collapsed .toolBar {
+    border: none !important
+  }
+  :root {
+    color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    color: #1a1a1a;
+    background-color: #ffffff;
+  }
+  svg {
+    color: #ffffff !important;
+  }
+  .sidebar-panel {
+    background-color: #1a1a1a;
+  }
+}
+.BaselineUI-ImageGallery ul li:first-child div[data-image-key="upload-button"] {
+  display: none;
+}
+.BaselineUI-ImageGallery ul li:first-child div:first-child {
+  order: 2;
+}
+.BaselineUI-ImageGallery ul li:first-child span {
+  min-width: 102px;
+  background: transparent;
+  border-radius: 0px !important;
+  padding: 0px;
+}
+.BaselineUI-ImageGallery ul li:first-child span span div {
+  margin-top: 0px !important;
+}
+.toggle-sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-scheme);
+}
+.toggle-sidebar button {
+  padding: 12px !important;
+  border: none !important;
+  background-color: transparent;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.document-list button,
+.toolBar button,
+.document-footer button {
+  border: none !important;
+  background-color: transparent;
+  box-shadow: none !important;
+  outline: none !important;
+  cursor: pointer;
+}
+.toggle-sidebar button svg {
+  height: 24px !important;
+  width: 24px !important;
+}
+.toggle-sidebar button:hover {
+  background-color: transparent !important;
+}
+/* .sidebar-panel button:focus {
+  box-shadow: none;
+  outline: none;
+  border: none !important;
+} */
+.sidebar-panel button:hover {
+  border: none;
+}
+.toolBar {
+  display: flex;
+  align-items: center;
+  color: var(--color-scheme);
+  text-align: center;
+  border-top: 1px solid #f0f3f9;
+  border-bottom: 1px solid #f0f3f9;
+  justify-content: center;
+  box-sizing: border-box !important;
+}
+.toolBar div {
+  border-left: 1px solid #f0f3f9;
+  cursor: pointer;
+  padding: 9px 8px 8px;
+  height: 100%;
+  align-content: center;
+}
+.toolBar div:first-child {
+  text-align: left;
+  border: none !important;
+}
+.sidebar-panel button svg {
+  width: 15px;
+  height: 15px;
+}
+.sidebar-panel button {
+  box-shadow: none !important;
+  outline: none !important;
+}
+.sidebar-panel .toolBar button {
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0px !important;
+}
+/* .sidebar-panel .toolBar button:active +  .sidebar-panel .toolBar button svg{
+  color: #4537DE !important;
+}
+.sidebar-panel .toolBar button:active {
+  background-color: #F0F3F9 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+} */
+.sidebar-panel button svg:nth-child(2) {
+  display: none;
+}
+.sidebar-panel .toolBar button {
+  border: none;
+}
+.pl-1 {
+  padding-left: 0.5rem;
+}
+.btn-danger {
+  background-color: #c83c29 !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+.btn-secondary {
+  background-color: #f0f3f9 !important;
+  border: 1px solid #d7dce4 !important;
+  color: #1a1a1a !important;
+  box-shadow: none !important;
+}
+p {
+  font-size: 14px !important;
+  line-height: 21px !important;
+}
+
+.AiButton {
+  position: fixed;
+  bottom: 20px;
+  min-height: 64px;
+  min-width: 64px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  justify-content: center;
+  box-shadow: 0px 4px 16px 0px #00000026;
+  background-color: #4537de;
+}
+.AiButton svg {
+  height: 24px;
+  width: 24px;
+}
+.chat-penal {
+  position: absolute;
+  bottom: 5px;
+  width: 320px;
+  right: 0;
+  box-shadow: 0px 4px 16px 0px #00000026;
+  border-radius: 6px !important;
+}
+.topBar {
+  background-color: var(--color-scheme);
+}
+
+.document-list .BaselineUI-Menu-Trigger {
+  display: none !important;
 }

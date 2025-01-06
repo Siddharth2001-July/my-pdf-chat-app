@@ -40,7 +40,7 @@ class PdfCache {
   async storePdf(document) {
     try {
       await this.init();
-      
+
       // Convert File to ArrayBuffer before starting the transaction
       const arrayBuffer = await this.fileToArrayBuffer(document.file);
       // Convert thumbnail URL to base64
@@ -61,10 +61,10 @@ class PdfCache {
 
         // Perform the store operation
         const request = store.put(pdfData);
-        
+
         request.onsuccess = () => resolve(true);
         request.onerror = () => reject(request.error);
-        
+
         // Handle transaction completion
         transaction.oncomplete = () => resolve(true);
         transaction.onerror = () => reject(transaction.error);
@@ -78,7 +78,7 @@ class PdfCache {
   async getPdf(id) {
     try {
       await this.init();
-      
+
       return new Promise((resolve, reject) => {
         const transaction = this.db.transaction([this.storeName], "readonly");
         const store = transaction.objectStore(this.storeName);
@@ -99,7 +99,7 @@ class PdfCache {
             resolve(null);
           }
         };
-        
+
         request.onerror = () => reject(request.error);
         transaction.onerror = () => reject(transaction.error);
       });
@@ -112,8 +112,8 @@ class PdfCache {
   async deletePdf(id) {
     try {
       await this.init();
-      
-      return new Promise((resolve, reject) => {
+
+      return new Promise(async (resolve, reject) => {
         const transaction = this.db.transaction([this.storeName], "readwrite");
         const store = transaction.objectStore(this.storeName);
         const request = store.delete(id);
@@ -131,7 +131,7 @@ class PdfCache {
   async getAllPdfs() {
     try {
       await this.init();
-      
+
       return new Promise((resolve, reject) => {
         const transaction = this.db.transaction([this.storeName], "readonly");
         const store = transaction.objectStore(this.storeName);
@@ -143,7 +143,7 @@ class PdfCache {
             const file = new File([pdfData.file], pdfData.name, {
               type: "application/pdf",
             });
-            
+
             // Return the complete object with the thumbnail
             return {
               id: pdfData.id,
@@ -155,7 +155,7 @@ class PdfCache {
           });
           resolve(pdfs);
         };
-        
+
         request.onerror = () => reject(request.error);
         transaction.onerror = () => reject(transaction.error);
       });
@@ -169,7 +169,7 @@ class PdfCache {
   async clearCache() {
     try {
       await this.init();
-      
+
       return new Promise((resolve, reject) => {
         const transaction = this.db.transaction([this.storeName], "readwrite");
         const store = transaction.objectStore(this.storeName);

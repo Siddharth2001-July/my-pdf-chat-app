@@ -1,17 +1,18 @@
-import { useState, useEffect, useCallback } from 'react';
-import { pdfCache } from '../utils/pdfCache';
+import { useState, useEffect, useCallback } from "react";
+import { pdfCache } from "../utils/pdfCache";
+import { generateThumbnail } from '../utils/thumbnailGenerator';
 
 export const usePdfManager = () => {
   const [documents, setDocuments] = useState([]);
   const [selectedDocumentId, setSelectedDocumentId] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isUploading] = useState(false);
 
   useEffect(() => {
     const loadCachedPdfs = async () => {
       try {
         const cachedPdfs = await pdfCache.getAllPdfs();
-        if (cachedPdfs.length > 0) {
+        if (cachedPdfs && cachedPdfs.length > 0) {
           setDocuments(cachedPdfs);
         }
       } catch (error) {
@@ -20,44 +21,13 @@ export const usePdfManager = () => {
     };
 
     loadCachedPdfs();
-  }, []);
+  }, []); documents
+  /**
+   * 
+   * @param {*} file 
+   * @returns 
+   */
 
-  const generateThumbnail = async (doc, maxRetries = 100, retryInterval = 500) => {
-    let retries = 0;
-
-    while (retries < maxRetries) {
-      try {
-        if (!window.instance) {
-          console.log(`Waiting for PDF to load... (Attempt ${retries + 1}/${maxRetries})`);
-          await new Promise((resolve) => setTimeout(resolve, retryInterval));
-          retries++;
-          continue;
-        }
-
-        const thumbnailUrl = await window.instance.renderPageAsImageURL(
-          { width: 200 },
-          0
-        );
-
-        const updatedDoc = {
-          ...doc,
-          thumbnail: thumbnailUrl,
-        };
-
-        setDocuments((prevDocs) =>
-          prevDocs.map((d) => (d.id === doc.id ? updatedDoc : d))
-        );
-
-        await pdfCache.storePdf(updatedDoc);
-        console.log("PDF cached and thumbnail generated successfully");
-        return;
-      } catch (error) {
-        console.error("Error generating thumbnail:", error);
-        retries++;
-      }
-    }
-    console.error("Failed to generate thumbnail: Max retries reached");
-  };
 
   const handleFileUpload = async (file) => {
     if (!(file instanceof File)) {
@@ -65,35 +35,49 @@ export const usePdfManager = () => {
       return;
     }
 
-    const newDoc = {
-      id: Date.now(),
-      name: file.name,
-      file: file,
-      thumbnail: "",
-    };
+    try {
+      // Generate thumbnail first
+      const thumbnailUrl = await generateThumbnail(file);
 
-    setDocuments(prev => [...prev, newDoc]);
-    setSelectedDocumentId(newDoc.id);
-    setUploadedFile(file);
+      const newDoc = {
+        id: Date.now(),
+        name: file.name,
+        file: file,
+        thumbnail: thumbnailUrl, // Store the generated thumbnail
+      };
 
-    await generateThumbnail(newDoc);
-  };
+      setDocuments((prev) => [...prev, newDoc]);
+      setSelectedDocumentId(newDoc.id);
+      setUploadedFile(file);
 
-  const handleSelectDocument = useCallback( (id) => {
-    setSelectedDocumentId(id);
-    const selectedDoc = documents.find((doc) => doc.id === id);
-    if (selectedDoc) {
-      setUploadedFile(selectedDoc.file);
+      // Cache the document with thumbnail
+      await pdfCache.storePdf(newDoc);
+    } catch (error) {
+      console.error("Error uploading file:", error);
     }
-  }, [documents]);
+  };
+  
+  useEffect(() => {
+    console.log('usePdfManager - uploadedFile changed:', uploadedFile);
+  }, [uploadedFile]);
+
+  const handleSelectDocument = useCallback(
+    (id) => {
+      setSelectedDocumentId(id);
+      const selectedDoc = documents.find((doc) => doc.id == id);
+      console.log('Selected doc:', selectedDoc);
+      console.log('Selected doc file type:', selectedDoc?.file instanceof File, typeof selectedDoc?.file);
+      if (selectedDoc) {
+        setUploadedFile(selectedDoc.file);
+      }
+    },
+    [documents]
+  );
 
   const handleDeleteDocument = async (id) => {
     try {
-      if (!window.confirm("Are you sure you want to delete this document?")) {
-        return;
-      }
-      await pdfCache.deletePdf(id);
-      setDocuments((prevDocs) => prevDocs.filter((doc) => doc.id !== id));
+      await pdfCache.deletePdf(parseInt(id));
+      setDocuments((prevDocs) => prevDocs.filter((doc) => doc.id != id));
       if (selectedDocumentId === id) {
         setSelectedDocumentId(null);
         setUploadedFile(null);

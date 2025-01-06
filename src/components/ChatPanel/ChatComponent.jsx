@@ -10,22 +10,22 @@ export default function ChatComponent({ onMessageSubmit, messages }) {
     await onMessageSubmit(text);
   };
 
-  const formattedMessages = messages.map(msg => ({
+  const formattedMessages = messages?.map((msg) => ({
     type: "PLAIN",
     text: msg.text,
     sender: msg.sender,
-    isComplete: true
+    isComplete: true,
   }));
 
   return (
     <ChatDialog
+      style={{ height: "92vh" }}
       messages={formattedMessages}
-      inputValue={inputValue}
-      onInputChanged={setInputValue}
-      onMessageSubmit={handleSendMessage}
-      variant="full-width"
+      // inputValue={inputValue}
+      // onInputChanged={setInputValue}
+      // onMessageSubmit={handleSendMessage}
+      // variant="full-width"
       isOpen
-     
     />
   );
 }

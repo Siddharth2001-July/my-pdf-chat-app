@@ -1,75 +1,60 @@
-import { Panel, Box, Tabs, TabItem, ToggleIconButton } from "@baseline-ui/core";
-import { CaretLeftIcon, CaretRightIcon } from "@baseline-ui/icons/20";
-import { useState } from "react";
+import { Panel, Box, ToggleIconButton } from "@baseline-ui/core";
+import { SidebarIcon } from "@baseline-ui/icons/24";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { Toolbar } from "../Toolbar";
+import DocsTabComponent from "../DocTab/DocsTabComponent";
 
-const Sidebar = ({
-  selectedTab,
-  setSelectedTab,
-  key,
-  children,
-  sidebarRef,
-}) => {
+const Sidebar = ({ key, sidebarRef, isSidebarOpen, onSelectDocument, selectedDocumentId, isUploading, onFileUpload, onDeleteDocument, documents }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const collapse = (isCollapsed) => {
-    setIsCollapsed(isCollapsed);
+  useEffect(() => {
     isCollapsed
-      ? sidebarRef.current?.resize?.(5)
-      : sidebarRef.current?.resize?.(22);
-  };
+      ? sidebarRef.current?.resize?.(4)
+      : sidebarRef.current?.resize?.(19.1);
+  }, [isCollapsed])
   return (
     <Panel
       key={key}
       order={1}
-      defaultSize={22}
-      className="panel sidebar-panel"
-      collapsible={true}
-      collapsedSize={5}
-      minSize={5}
+      defaultSize={19.1}
+      className={`panel sidebar-panel ${isCollapsed ? 'sidebar-collapsed' : ''} `}
+      collapsible={isSidebarOpen}
+      collapsedSize={4}
+      minSize={4}
       ref={sidebarRef}
-      style={
-        isCollapsed ? { backgroundColor: "#efebe7", boxShadow: "0 0" } : {}
-      }
     >
-      <Box padding="md">
-        <ToggleIconButton
-          aria-label="Toggle Icon Button"
-          icon={{
-            selected: CaretRightIcon,
-            unselected: CaretLeftIcon,
-          }}
-          size="sm"
-          onChange={collapse}
-        />
-
-        {isCollapsed ? null : (
-          <>
-            <Text size="lg" style={{ display: "inline-block", height: "4vh", margin: '5px 10px' }}>
-              {generateTab && selectedTab == "generate" ? (
-                <>Generate Document</>
-              ) : null}
-              {docsTab && selectedTab == "docs" ? <>Documents</> : null}
-            </Text>
-            <Tabs
-              aria-label="Document Types"
-              selectedValue={selectedTab}
-              onSelectionChange={setSelectedTab}
-            >
-              {docsTab != null && (
-                <TabItem value="docs" title="Docs">
-                  {children}
-                </TabItem>
-              )}
-              {generateTab != null && (
-                <TabItem value="generate" title="Generate">
-                  {children}
-                </TabItem>
-              )}
-            </Tabs>
-          </>
-        )}
+      <Box backgroundColor="background.primary.strong">
+        <Box className="toggle-sidebar">
+          {!isCollapsed && <span className="pl-1">Documents</span>}
+          <ToggleIconButton
+            aria-label="Toggle Icon Button"
+            icon={{
+              selected: SidebarIcon,
+              unselected: SidebarIcon,
+            }}
+            size="sm"
+            onChange={() => setIsCollapsed(!isCollapsed)}
+          />
+        </Box>
+        <Box>
+          <Toolbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+        </Box>
+        {!isCollapsed &&
+          <DocsTabComponent
+            documents={documents}
+            selectedDocumentId={selectedDocumentId}
+            onSelectDocument={onSelectDocument}
+            isUploading={isUploading}
+            onFileUpload={onFileUpload}
+            onDeleteDocument={onDeleteDocument}
+          />}
       </Box>
     </Panel>
   );
 };
-
+Sidebar.propTypes = {
+  isSidebarOpen: PropTypes.bool.isRequired,
+  key: PropTypes.string.isRequired,
+  sidebarRef: PropTypes.object,
+};
 export default Sidebar;

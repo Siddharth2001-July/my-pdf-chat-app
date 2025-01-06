@@ -1,0 +1,6 @@
+.document-thumbnail {
+  width: 50px;
+  height: auto;
+  object-fit: contain;
+  margin-right: 10px;
+} 
