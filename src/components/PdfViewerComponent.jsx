@@ -65,21 +65,24 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
           styleSheets: ['./customPSPDFKit.css']
         });
         window.instance = instance
-        instance.addEventListener(
-          "viewState.change",
-          (viewState, previousViewState) => {
-            if (
-              viewState.get("interactionMode") ===
-              PSPDFKit.InteractionMode.DOCUMENT_EDITOR
-            ) {
-              setTimeout(() => {
-                const docEditDiv = instance.contentDocument.querySelector('section.cjv3et0.PSPDFKit-Modal-Dialog');
-                docEditDiv.style.maxWidth = '50vw';
-                console.log(docEditDiv);
-              }, 10);
-            }
-          }
-        );
+        instance.setViewState(viewState => (
+          viewState.set("zoom", "FIT_TO_WIDTH")
+        ));
+        // instance.addEventListener(
+        //   "viewState.change",
+        //   (viewState, previousViewState) => {
+        //     if (
+        //       viewState.get("interactionMode") ===
+        //       PSPDFKit.InteractionMode.DOCUMENT_EDITOR
+        //     ) {
+        //       setTimeout(() => {
+        //         const docEditDiv = instance.contentDocument.querySelector('section.cjv3et0.PSPDFKit-Modal-Dialog');
+        //         docEditDiv.style.maxWidth = '50vw';
+        //         console.log(docEditDiv);
+        //       }, 10);
+        //     }
+        //   }
+        // );
         const text = await extractTextFromPage(instance);
         console.log('Extracted text:', text);
         onTextExtracted(text);
