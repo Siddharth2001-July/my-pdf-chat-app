@@ -1,0 +1,8 @@
+/* Document Editor and Search bar fix */
+.PSPDFKit-Root {
+    contain: content;
+}
+
+section.cjv3et0.PSPDFKit-Modal-Dialog {
+    max-width: 50vw;
+}

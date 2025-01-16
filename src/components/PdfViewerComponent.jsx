@@ -62,12 +62,14 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
           document: documentUrl,
           baseUrl: `${window.location.protocol}//${window.location.host}/`,
           licenseKey: import.meta.env.VITE_PSPDFKIT_LICENSE_KEY,
-          styleSheets: ['./customPSPDFKit.css']
+          styleSheets: ["customPSPDFKit.css"]
         });
         window.instance = instance
         instance.setViewState(viewState => (
           viewState.set("zoom", "FIT_TO_WIDTH")
         ));
+        
+        // Document Editor position
         // instance.addEventListener(
         //   "viewState.change",
         //   (viewState, previousViewState) => {
@@ -78,11 +80,27 @@ export default function PdfViewerComponent({ document, onTextExtracted }) {
         //       setTimeout(() => {
         //         const docEditDiv = instance.contentDocument.querySelector('section.cjv3et0.PSPDFKit-Modal-Dialog');
         //         docEditDiv.style.maxWidth = '50vw';
-        //         console.log(docEditDiv);
         //       }, 10);
         //     }
         //   }
         // );
+
+        // Search position
+        // instance.addEventListener(
+        //   "viewState.change",
+        //   (viewState, previousViewState) => {
+        //     if (
+        //       viewState.get("interactionMode") ===
+        //       PSPDFKit.InteractionMode.SEARCH
+        //     ) {
+        //       setTimeout(() => {
+        //         const docEditDiv = instance.contentDocument.querySelector('div._1gzftth1._1yep5z6ih._1yep5z6ii._1yep5z6ij.BaselineUI-Popover-Content._1yep5z6d7');
+        //         docEditDiv.style.left = '25vw';
+        //       }, 10);
+        //     }
+        //   }
+        // );
+        
         const text = await extractTextFromPage(instance);
         console.log('Extracted text:', text);
         onTextExtracted(text);
