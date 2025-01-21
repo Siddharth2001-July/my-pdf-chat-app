@@ -7,7 +7,7 @@ const MainPanel = ({ uploadedFile, onTextExtracted, selectedDocumentId, document
   console.log('MainPanel uploadedFile type:', uploadedFile instanceof File, typeof uploadedFile);
   
   return (
-    <Panel order={2} defaultSize={60} minSize={40} className="panel main-panel">
+    <Panel order={2} defaultSize={60} minSize={40} className="main-panel">
       <TopBar 
         documents = {documents}
         selectedDocumentId={selectedDocumentId}

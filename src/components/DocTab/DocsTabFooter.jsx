@@ -1,5 +1,6 @@
 import {
   ActionButton,
+  ActionIconButton,
   Box,
   Dialog,
   DialogTitle,
@@ -55,35 +56,25 @@ export const DocsTabFooter = ({ selectedDocumentId, onDeleteDocument }) => {
           </Dialog>
         </ModalContent>
       </Modal>
-      <Box
-        style={{ display: "flex", justifyContent: "center" }}
-        className="document-footer"
-      >
-        <Tooltip text="Duplicate" delay={0} closeDelay={1000} placement="top">
-          <ActionButton
-            style={{
-              width: "50%",
-              padding: "5px",
-              minHeight: "50px",
-              justifyContent: "center",
-            }}
-            label={<DuplicateIcon style={{ width: '20px', height: '20px'}} />}
-            // onClick={() => setIsOpen(true)}
+      <div className="footer-actions-container">
+        <div className="footer-actions">
+          <ActionIconButton
+            className="footer-action"
+            variant="secondary"
+            size="md"
+            icon={DuplicateIcon}
           />
-        </Tooltip>
-        <ModalTrigger>
-          <ActionButton
-            style={{
-              width: "50%",
-              padding: "5px",
-              minHeight: "50px",
-              justifyContent: "center",
-            }}
-            label={<TrashIcon style={{ width: '20px', height: '20px'}} />}
-            onClick={() => setIsOpen(true)}
-          />
-        </ModalTrigger>
-      </Box>
+          <ModalTrigger>
+            <ActionIconButton
+              className="footer-action"
+              variant="secondary"
+              size="md"
+              icon={TrashIcon}
+              onClick={() => setIsOpen(true)}
+            />
+          </ModalTrigger>
+        </div>
+      </div >
     </>
   );
 };

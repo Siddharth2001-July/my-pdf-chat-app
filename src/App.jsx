@@ -60,7 +60,6 @@ function App() {
         />
 
         <PanelResizeHandle />
-        <DebugComponent uploadedFile={uploadedFile} />
         <MainPanel
           key={"MainPanel"}
           uploadedFile={uploadedFile}
@@ -78,7 +77,7 @@ function App() {
         )}
         {!chatPenalShow && (
           <ActionButton
-            label={<AiIcon />}
+            label={<AiIcon style={{color: "var(--bui-color-icon-oninteractive) !important"}}/>}
             variant="primary"
             className="AiButton"
             onClick={() => setChatPenalShow(!chatPenalShow)}

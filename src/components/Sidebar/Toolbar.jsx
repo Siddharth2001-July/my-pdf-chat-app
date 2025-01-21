@@ -1,11 +1,11 @@
-import { Box, Menu, SearchInput } from "@baseline-ui/core";
-import { StrikeoutTextAltIcon } from "@baseline-ui/icons/16";
-import { SearchIcon } from "@baseline-ui/icons/20";
+import { Box, Menu, SearchInput, Separator } from "@baseline-ui/core";
 import {
+  SearchIcon,
   FolderIcon,
-  FilterIcon,
+  FilterAltIcon,
   XCircleFilledIcon,
-} from "@baseline-ui/icons/24";
+  ArrowUpArrowDownIcon
+} from "@baseline-ui/icons/16";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
@@ -70,78 +70,61 @@ export const Toolbar = ({ isCollapsed, setIsCollapsed }) => {
     setIsCollapsed(false);
   };
   return (
-    <Box backgroundColor="background.primary.strong" className="toolBar">
-      {isCollapsed ? (
-        <div
-          onClick={() => handleSearchShow()}
-          style={{ display: "flex", alignItems: "center", height: "52px" }}
-        >
-          <SearchIcon />
-        </div>
-      ) : (
+    <Box className="toolbar-row">
+      {!isCollapsed && (
         <>
           {searchShow ? (
             <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "10px",
-                width: "100%",
-              }}
+              className="search-show-container"
             >
               <SearchInput
                 aria-label="Search"
                 placeholder="Search"
-                style={{ width: "100%" }}
+                variant="ghost"
+                size="sm"
               />
               <XCircleFilledIcon
                 onClick={() => setSearchShow(false)}
-                style={{ width: "22px", height: "22px" }}
+                className="close-search"
               />
             </div>
           ) : (
             <>
               <div
                 onClick={() => setSearchShow(true)}
-                style={{
-                  width: "40%",
-                  height: "52px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
+                className="search-container"
               >
                 <SearchIcon />
               </div>
               <div
-                style={{
-                  width: "20%",
-                }}
+                className="menu-items-container"
               >
+                <Separator variant="primary" orientation="vertical" className="toolmenu-separator" />
                 <Menu
                   items={items}
-                  onSelectionChange={function Rs() {}}
+                  onSelectionChange={function Rs() { }}
                   selectionMode="single"
                   triggerLabel={FolderIcon}
                   defaultSelectedKeys={["all"]}
+                  className="menu-item"
                 />
-              </div>
-              <div style={{ width: "20%" }}>
+                <Separator variant="primary" orientation="vertical" className="toolmenu-separator" />
                 <Menu
                   items={multiItems}
-                  onSelectionChange={function Rs() {}}
+                  onSelectionChange={function Rs() { }}
                   selectionMode="multiple"
-                  triggerLabel={FilterIcon}
+                  triggerLabel={FilterAltIcon}
                   defaultSelectedKeys={["all"]}
+                  className="menu-item"
                 />
-              </div>
-              <div style={{ width: "20%" }}>
+                <Separator variant="primary" orientation="vertical" className="toolmenu-separator" />
                 <Menu
                   items={sortItems}
                   selectionMode="single"
                   defaultSelectedKeys={["oldest"]}
-                  onSelectionChange={function Rs() {}}
-                  triggerLabel={StrikeoutTextAltIcon}
+                  onSelectionChange={function Rs() { }}
+                  triggerLabel={ArrowUpArrowDownIcon}
+                  className="menu-item"
                 />
               </div>
             </>

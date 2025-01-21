@@ -1,84 +1,69 @@
 import {
   ActionButton,
   Box,
+  Separator,
   Text,
   Toolbar,
 } from "@baseline-ui/core";
 import { useState } from "react";
-import { DocumentArrowRightIcon } from "@baseline-ui/icons/24";
-const TopBar = ({documents, selectedDocumentId}) => {
+import { PagePortraitIcon } from "@baseline-ui/icons/24";
+import "./TopBar.css";
+
+const TopBar = ({ documents, selectedDocumentId }) => {
   const [selectedItem, setSelectedItem] = useState("view-markup");
-  
-  const handleAction = (actionId) => { 
+
+  const handleAction = (actionId) => {
     setSelectedItem(actionId); // Update selected state
   };
   return (
-    <Box backgroundColor="background.primary.strong">
-      <Toolbar
-        className="topBar"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0px 8px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <DocumentArrowRightIcon style={{ width: "24px", height: "24px" }} />
-          <Text variant="body1" style={{ fontSize: "12px", color: "#606671" }}>
-            {(selectedDocumentId && documents.length > 0) ? documents.find(doc => doc.id == selectedDocumentId).name: ""}
-          </Text>
-        </div>
-        <div>
-          <ActionButton
-            onClick={() => handleAction("view-markup")}
-            variant="secondary"
-            className="document-save"
-            label="View & Markup"
-            style={{
-              height: "100%",
-              minHeight: "48px",
-              backgroundColor: `${
-                selectedItem === "view-markup" ? "#4537DE" : "#fff"
-              }`,
-              color: `${selectedItem === "view-markup" ? "#fff" : "#000"}`,
-              borderRadius: "0px",
-              border: "none",
-              boxShadow: "none",
-            }}
-          />
-          <ActionButton
-            variant="secondary"
-            className="document-save"
-            label="Edit Content"
-            onClick={() => handleAction("edit-content")}
-            style={{
-              height: "100%",
-              minHeight: "48px",
-              backgroundColor: `${
-                selectedItem === "edit-content" ? "#4537DE" : "#fff"
-              }`,
-              color: `${selectedItem === "edit-content" ? "#fff" : "#000"}`,
-              borderRadius: "0px",
-              border: "none",
-              boxShadow: "none",
-            }}
-          />
-        </div>
+    <Toolbar
+      className="topBarContainer">
+      <div className="topBarLeft">
+        <PagePortraitIcon style={{ width: "24px", height: "24px", color: "var(--bui-color-icon-secondary)" }} />
+        <Text style={{ fontSize: "12px", color: "var(--bui-color-text-helper)" }}>
+          {(selectedDocumentId && documents.length > 0) ? documents.find(doc => doc.id == selectedDocumentId).name : ""}
+        </Text>
+      </div>
+      <div className="TopBarToggleButtonContainer">
+        <Separator className="TopBarSeparator" />
         <ActionButton
+          onClick={() => handleAction("view-markup")}
           variant="secondary"
-          className="document-save"
-          label=" Save Document"
+          className="TopBarToggleButton"
+          label="View & Markup"
           style={{
-            height: "100%",
-            minHeight: "40px",
-            backgroundColor: "#A9AEB7",
-            color: "#fff",
-            borderRadius: "5px",
+            background: `${selectedItem === "view-markup" ? "var(--bui-color-background-interactive-enabled, #4537DE)" : ""
+              }`,
+            color: `${selectedItem === "view-markup" ? "var(--bui-color-text-oninteractive)" : ""}`,
           }}
         />
-      </Toolbar>
-    </Box>
+        <Separator className="TopBarSeparator" />
+        <ActionButton
+          variant="secondary"
+          className="TopBarToggleButton"
+          label="Edit Content"
+          onClick={() => handleAction("edit-content")}
+          style={{
+            backgroundColor: `${selectedItem === "edit-content" ? "#4537DE" : "#fff"
+              }`,
+            color: `${selectedItem === "edit-content" ? "#fff" : "#000"}`,
+          }}
+        />
+        <Separator className="TopBarSeparator" />
+      </div>
+      <div className="TopBarRight">
+        <ActionButton
+          variant="primary"
+          size="md"
+          isDisabled={true}
+          label=" Save Document"
+          style={{
+            borderRadius: "var(--bui-rounded-xs, 2px)",
+            background: "var(--bui-color-background-interactive-disabled, #A9AEB7)",
+          }}
+        />
+      </div>
+    </Toolbar>
   );
 };
 

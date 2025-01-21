@@ -2,6 +2,7 @@ import { useRef } from "react";
 import "./DocsTabComponents.css";
 import { DocsTabFooter } from "./DocsTabFooter";
 import DocumentList from "./utils/DocumentList";
+import { Separator } from "@baseline-ui/core";
 
 const DocsTabComponent = ({onSelectDocument, selectedDocumentId, isUploading, onFileUpload, onDeleteDocument, documents}) => {
   const fileInputRef = useRef(null);
@@ -18,7 +19,7 @@ const DocsTabComponent = ({onSelectDocument, selectedDocumentId, isUploading, on
     fileInputRef.current?.click();
   };
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "86vh", justifyContent: 'space-between' }}>
+    <div className="doc-nav-container">
       <div
         className="document-list"
       >
@@ -32,7 +33,8 @@ const DocsTabComponent = ({onSelectDocument, selectedDocumentId, isUploading, on
         />
       </div>
       {selectedDocumentId && (
-        <div style={{ borderTop: "1px solid #F0F3F9" }}>
+        <div className="bottom-container">
+          <Separator className="footer-separator"/>
           <DocsTabFooter
             selectedDocumentId={selectedDocumentId}
             onDeleteDocument={onDeleteDocument}
