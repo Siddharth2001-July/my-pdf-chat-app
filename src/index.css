@@ -91,7 +91,7 @@ h1 {
   line-height: 1.1;
 }
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -108,8 +108,8 @@ h1 {
   .sidebar-panel {
     background-color: #ffffff;
   }
-}
-@media (prefers-color-scheme: dark) {
+} */
+/* @media (prefers-color-scheme: dark) {
   .sidebar-collapsed .toolBar {
     border: none !important
   }
@@ -129,7 +129,7 @@ h1 {
   .sidebar-panel {
     background-color: #1a1a1a;
   }
-}
+} */
 .BaselineUI-ImageGallery ul li:first-child div[data-image-key="upload-button"] {
   display: none;
 }
