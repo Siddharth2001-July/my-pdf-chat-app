@@ -15,7 +15,7 @@
     "@baseline-ui/recipes": "^0.31.0",
     "@baseline-ui/tokens": "^0.31.0",
     "@pspdfkit/document-authoring": "^1.1.0",
-    "pspdfkit": "https://my.pspdfkit.com/download/pspdfkit-web/nightly.tar.gz?cachebust=todaysdate",
+    "pspdfkit": "./public/PSPDFKit-Web-binary-2024.9.0-0e51579.tar.gz",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
