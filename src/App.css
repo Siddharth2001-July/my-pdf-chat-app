@@ -15,6 +15,30 @@
   flex: 1 0 0;
 }
 
+.viewer-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+
+.viewer-doc-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+
+.no-doc-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+
 .aside-panel {
   border-radius: var(--rounded-md, 8px);
   background: var(--bui-color-background-primary-subtle, #FFF);
