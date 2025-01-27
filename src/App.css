@@ -4,6 +4,7 @@
   background-color: var(--bui-color-background-secondary-medium);
   color: var(--bui-color-text-primary);
   border-color: var(--bui-color-border-subtle);
+  height: 100vh;
 }
 
 .main-panel {

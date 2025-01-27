@@ -8,8 +8,7 @@
 
 .sidebar {
     display: flex;
-    width: 244px;
-    height: 832px;
+    overflow: auto;
     justify-content: flex-end;
     align-items: flex-start;
     background: var(--bui-color-background-primary-subtle, #FFF);
